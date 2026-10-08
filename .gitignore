@@ -1,0 +1,5 @@
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+fraud_clean.csv
+*_1.ipynb
