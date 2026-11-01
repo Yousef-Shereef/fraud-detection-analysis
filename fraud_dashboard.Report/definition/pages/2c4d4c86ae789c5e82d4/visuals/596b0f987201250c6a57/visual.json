@@ -1,0 +1,275 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "596b0f987201250c6a57",
+  "position": {
+    "x": 30,
+    "y": 110,
+    "z": 0,
+    "height": 950,
+    "width": 900,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "keyDriversVisual",
+    "query": {
+      "queryState": {
+        "ExplainBy": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fraud_clean"
+                    }
+                  },
+                  "Property": "Device_Used"
+                }
+              },
+              "queryRef": "fraud_clean.Device_Used",
+              "nativeQueryRef": "Device_Used"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fraud_clean"
+                    }
+                  },
+                  "Property": "Location"
+                }
+              },
+              "queryRef": "fraud_clean.Location",
+              "nativeQueryRef": "Location"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fraud_clean"
+                    }
+                  },
+                  "Property": "Payment_Method"
+                }
+              },
+              "queryRef": "fraud_clean.Payment_Method",
+              "nativeQueryRef": "Payment_Method"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fraud_clean"
+                        }
+                      },
+                      "Property": "Account_Age"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fraud_clean.Account_Age)",
+              "nativeQueryRef": "Sum of Account_Age"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fraud_clean"
+                        }
+                      },
+                      "Property": "Number_of_Transactions_Last_24H"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fraud_clean.Number_of_Transactions_Last_24H)",
+              "nativeQueryRef": "Sum of Number_of_Transactions_Last_24H"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fraud_clean"
+                        }
+                      },
+                      "Property": "Previous_Fraudulent_Transactions"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fraud_clean.Previous_Fraudulent_Transactions)",
+              "nativeQueryRef": "Sum of Previous_Fraudulent_Transactions"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fraud_clean"
+                        }
+                      },
+                      "Property": "Time_of_Transaction"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fraud_clean.Time_of_Transaction)",
+              "nativeQueryRef": "Sum of Time_of_Transaction"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fraud_clean"
+                        }
+                      },
+                      "Property": "Transaction_Amount"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fraud_clean.Transaction_Amount)",
+              "nativeQueryRef": "Sum of Transaction_Amount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fraud_clean"
+                    }
+                  },
+                  "Property": "Transaction_Type"
+                }
+              },
+              "queryRef": "fraud_clean.Transaction_Type",
+              "nativeQueryRef": "Transaction_Type"
+            }
+          ]
+        },
+        "Target": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fraud_clean"
+                    }
+                  },
+                  "Property": "Fraudulent"
+                }
+              },
+              "queryRef": "fraud_clean.Fraudulent",
+              "nativeQueryRef": "Fraudulent"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fraud_clean"
+                  }
+                },
+                "Property": "Device_Used"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "keyDrivers": [
+        {
+          "properties": {
+            "targetValue": {
+              "expr": {
+                "Literal": {
+                  "Value": "'true'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Key influencers: what increases the chance of fraud?'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

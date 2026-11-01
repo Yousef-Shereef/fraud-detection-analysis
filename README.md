@@ -18,7 +18,7 @@ An end-to-end data analysis of 51,000 financial transactions to find out **what 
 
 ## Tools
 
-Python · pandas · NumPy · Matplotlib · seaborn · SciPy · scikit-learn · Jupyter
+Python · pandas · NumPy · Matplotlib · seaborn · SciPy · scikit-learn · Jupyter · Power BI (Power Query, DAX)
 
 ## Project steps
 
@@ -64,6 +64,30 @@ Python · pandas · NumPy · Matplotlib · seaborn · SciPy · scikit-learn · J
 
 *Both baseline models sit on the random-guessing line.*
 
+## Power BI dashboard
+
+An interactive two-page dashboard built on the cleaned data (`fraud_dashboard.pbip`).
+
+![Power BI overview page](figures/powerbi_overview.jpg)
+
+**Page 1: Overview**
+- KPI cards: transactions, fraud cases, fraud rate (they match the notebook: 50,000 / 2,460 / 4.92%)
+- Fraud rate by city, device and payment method, with **conditional colors** (red = above the 4.92% average) and a dashed average line. Every axis starts at 0.
+- Fraud rate by hour against the overall rate, with the 2,500 rows that have no hour filtered out
+- A type × device heatmap colored by the gap from average
+- Slicers for transaction type and amount group, which filter the whole page
+
+![Power BI AI insights page](figures/powerbi_ai_insights.jpg)
+
+**Page 2: AI Insights**
+- **Key influencers** (Power BI's built-in ML visual) flags Chicago (1.13×) and Mobile (1.12×). These are the same small gaps that failed the notebook's tests (all-city chi-square p = 0.19, nothing passes Bonferroni), so the dashboard labels them as noise. This shows why automated "insights" still need a statistical check.
+- **Decomposition tree**: drill fraud rate by type → city → device → payment method. Smaller groups swing further from the average (for Online Purchase: Chicago 6.4% vs Seattle 3.7%).
+
+**Built with**
+- **Power Query (M):** typed columns and two group columns (`Account_Age_Group`, `Amount_Group`)
+- **DAX measures:** `Transactions`, `Fraud Cases`, `Fraud Rate` (`DIVIDE`), `Overall Fraud Rate` (`CALCULATE` + `ALL`), `Gap vs Overall (pts)`, and two color measures used for conditional formatting
+- **PBIP / PBIR format:** the report and model are saved as text files, so they are version-controlled in Git
+
 ## Recommendations
 
 - **Don't build fraud rules on these attributes.** City-, device- or amount-based rules would add cost without catching more fraud.
@@ -88,6 +112,8 @@ jupyter notebook "Fraud Detection Dataset.ipynb"
 
 Keep `Fraud Detection Dataset.csv` next to the notebook and run all cells from top to bottom (about 1 minute). The notebook writes `fraud_clean.csv` and saves every chart to `figures/`.
 
+**Power BI:** run the notebook first (it creates `fraud_clean.csv`), then open `fraud_dashboard.pbip` in Power BI Desktop. If your folder is not `D:\Work\Fraud Detection Dataset`, update the file path in **Transform data → Data source settings**.
+
 ## Files
 
 | File | Description |
@@ -97,3 +123,4 @@ Keep `Fraud Detection Dataset.csv` next to the notebook and run all cells from t
 | `fraud_clean.csv` | Cleaned data (generated) |
 | `figures/` | All charts (generated) |
 | `MANAGER_SUMMARY.md` | One-page summary for non-technical readers |
+| `fraud_dashboard.pbip` + `fraud_dashboard.Report/` + `fraud_dashboard.SemanticModel/` | Power BI dashboard (project format) |

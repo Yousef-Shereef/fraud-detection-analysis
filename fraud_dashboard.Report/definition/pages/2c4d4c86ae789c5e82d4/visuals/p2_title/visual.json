@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "p2_title",
+  "position": {
+    "x": 30,
+    "y": 15,
+    "z": 5,
+    "width": 1860,
+    "height": 85,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "AI Insights: does anything drive fraud?",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "24pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Key influencers flags Chicago (1.13x) and Mobile (1.12x), but these are the same small gaps that failed the notebook's tests (all-city chi-square p = 0.19; nothing passes Bonferroni). Splitting further makes groups smaller and swings wider (Online Purchase: Chicago 6.4% vs Seattle 3.7%). That is noise, not a pattern.",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#605E5C"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

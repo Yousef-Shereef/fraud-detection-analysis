@@ -2,4 +2,7 @@
 .ipynb_checkpoints/
 __pycache__/
 fraud_clean.csv
-*_1.ipynb
+
+# Power BI project: local caches
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

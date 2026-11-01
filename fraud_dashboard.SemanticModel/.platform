@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "fraud_dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "846107f9-a9e4-4127-bcb1-a114f169e926"
+  }
+}

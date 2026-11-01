@@ -1,0 +1,189 @@
+table fraud_clean
+	lineageTag: 87c09358-37d0-4911-a452-9e319e06ca9f
+
+	measure Transactions = COUNTROWS(fraud_clean)
+		formatString: #,0
+		lineageTag: 6918e269-eb6d-4313-b8e7-221944243b97
+
+	measure 'Fraud Cases' = CALCULATE(COUNTROWS(fraud_clean), fraud_clean[Fraudulent] = TRUE())
+		formatString: #,0
+		lineageTag: 694808b1-3fab-4a78-ba12-9c9ae88ac255
+
+	measure 'Fraud Rate' = DIVIDE([Fraud Cases], [Transactions])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: ab92a7de-51cd-47ea-8fb0-333d5acb2c72
+
+	measure 'Overall Fraud Rate' = CALCULATE([Fraud Rate], ALL(fraud_clean))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 9d479c27-fa45-4988-89c2-6cda0033417f
+
+	measure 'Gap vs Overall (pts)' = ([Fraud Rate] - [Overall Fraud Rate]) * 100
+		formatString: 0.00
+		lineageTag: ee84d249-46ab-4f77-b089-b3c6f50c7801
+
+	measure 'Rate Color' = IF([Fraud Rate] > [Overall Fraud Rate], "#D64550", "#2B6CB0")
+
+	measure 'Heat Color' =
+			VAR g = [Gap vs Overall (pts)]
+			RETURN SWITCH(TRUE(),
+			    ISBLANK([Fraud Rate]), BLANK(),
+			    g >= 1, "#E06666",
+			    g >= 0.5, "#F4B6B6",
+			    g > -0.5, "#F3F2F1",
+			    g > -1, "#B7D3F0",
+			    "#6FA8DC")
+
+	column Transaction_ID
+		dataType: string
+		lineageTag: 491fba7e-27fb-48cc-bcaf-bed840079d73
+		summarizeBy: none
+		sourceColumn: Transaction_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column User_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f22c0be-bbf7-44e4-9ba6-288a22f2bb53
+		summarizeBy: count
+		sourceColumn: User_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Transaction_Amount
+		dataType: double
+		lineageTag: 3b3780af-7bb9-4891-a177-b99aa309fec4
+		summarizeBy: sum
+		sourceColumn: Transaction_Amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Transaction_Type
+		dataType: string
+		lineageTag: db98edcb-181c-46c8-9cd9-d6c63b2db3f2
+		summarizeBy: none
+		sourceColumn: Transaction_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Time_of_Transaction
+		dataType: int64
+		formatString: 0
+		lineageTag: 7bead17c-e290-4e85-bbc9-3f866a5416ad
+		summarizeBy: sum
+		sourceColumn: Time_of_Transaction
+
+		annotation SummarizationSetBy = Automatic
+
+	column Device_Used
+		dataType: string
+		lineageTag: ab85cdaf-67b9-4113-925a-3a780f82b9b2
+		summarizeBy: none
+		sourceColumn: Device_Used
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 68713833-6589-4667-b36e-3c925f262a2f
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Previous_Fraudulent_Transactions
+		dataType: int64
+		formatString: 0
+		lineageTag: 0dbfaa32-608c-4da6-a25b-3311ab7657b5
+		summarizeBy: sum
+		sourceColumn: Previous_Fraudulent_Transactions
+
+		annotation SummarizationSetBy = Automatic
+
+	column Account_Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 5da15e93-3465-4ecc-a472-ee3a76682ade
+		summarizeBy: sum
+		sourceColumn: Account_Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column Number_of_Transactions_Last_24H
+		dataType: int64
+		formatString: 0
+		lineageTag: a81150cd-64d2-47bc-9e8a-5099090db57e
+		summarizeBy: sum
+		sourceColumn: Number_of_Transactions_Last_24H
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Method
+		dataType: string
+		lineageTag: fb1a18fe-fc47-4bb8-90a7-6dcbd3289914
+		summarizeBy: none
+		sourceColumn: Payment_Method
+
+		annotation SummarizationSetBy = Automatic
+
+	column Fraudulent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5db5679c-b75f-4a5b-b0d9-5938a2be6f8e
+		summarizeBy: none
+		sourceColumn: Fraudulent
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount_Was_Missing
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c96dceee-9bb1-4d5c-87e3-9bcdacc254b3
+		summarizeBy: none
+		sourceColumn: Amount_Was_Missing
+
+		annotation SummarizationSetBy = Automatic
+
+	column Account_Age_Group
+		dataType: string
+		lineageTag: b9b1d45e-670c-4af8-b422-5c2e3b081924
+		summarizeBy: none
+		sourceColumn: Account_Age_Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Amount_Group
+		dataType: string
+		lineageTag: e020ba4b-d2c6-44cb-ba8a-35fd6055c750
+		summarizeBy: none
+		sourceColumn: Amount_Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fraud_clean = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("D:\Work\Fraud Detection Dataset\fraud_clean.csv"), [Delimiter=",", Columns=13, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"Transaction_ID", type text}, {"User_ID", Int64.Type}, {"Transaction_Amount", type number}, {"Transaction_Type", type text}, {"Time_of_Transaction", Int64.Type}, {"Device_Used", type text}, {"Location", type text}, {"Previous_Fraudulent_Transactions", Int64.Type}, {"Account_Age", Int64.Type}, {"Number_of_Transactions_Last_24H", Int64.Type}, {"Payment_Method", type text}, {"Fraudulent", type logical}, {"Amount_Was_Missing", type logical}}, "en-US"),
+				    #"Added Account Age Group" = Table.AddColumn(#"Changed Type", "Account_Age_Group", each
+				        if [Account_Age] <= 7 then "1. Up to 1 week"
+				        else if [Account_Age] <= 30 then "2. 1 week - 1 month"
+				        else if [Account_Age] <= 60 then "3. 1-2 months"
+				        else if [Account_Age] <= 90 then "4. 2-3 months"
+				        else "5. 3+ months", type text),
+				    #"Added Amount Group" = Table.AddColumn(#"Added Account Age Group", "Amount_Group", each
+				        if [Transaction_Amount] < 1000 then "1. Under 1k"
+				        else if [Transaction_Amount] < 2500 then "2. 1k - 2.5k"
+				        else if [Transaction_Amount] < 5000 then "3. 2.5k - 5k"
+				        else "4. 5k+ (outliers)", type text)
+				in
+				    #"Added Amount Group"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
